@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+      <script src="script.js"></script>
+        <title>Calculadora de Salário - Auxiliar Técnico de Educação - PMSP</title>
+    </head>
+        <body>
+            <h1>Calculadora de Salário - Auxiliar Técnico de Educação - PMSP</h1>
+                <form id="calculator" action="">
+                    <!--Somatória dos proventos menos os descontos-->
+                    <h3 id="proventos_label">Proventos líquidos a receber (R$):</h3>         
+                        <p id="proventos">1697.84</p>   
+                    <!--Lista de referências do cargo de ATE-->
+                    <label for="referencias">
+                        <h2 id="titulo">Selecione a sua referência:</h2>
+                    </label>
+                    <p><select name="referencias" id="referencias" onchange="screenUpdate()">
+                        <option value="QPE01">QPE-01</option>
+                        <option value="QPE02">QPE-02</option>
+                        <option value="QPE03" selected>QPE-03</option>
+                        <option value="QPE04">QPE-04</option>
+                        <option value="QPE05">QPE-05</option>
+                        <option value="QPE06">QPE-06</option>
+                        <option value="QPE07">QPE-07</option>
+                        <option value="QPE08">QPE-08</option>
+                        <option value="QPE09">QPE-09</option>
+                        <option value="QPE10">QPE-10</option>
+                        <option value="QPE11">QPE-11</option>
+                        <option value="QPE12">QPE-12</option>
+                        <option value="QPE13">QPE-13</option>
+                        <option value="QPE14">QPE-14</option>
+                    </select></p> 
+                    <!--Lista de graus do cargo de ATE-->
+                    <label for="graus"><h2 id="titulo">Selecione o seu grau:</h2></label>
+                    <p><select name="graus" id="graus" onchange="screenUpdate()">
+                        <option value="A" selected>A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                        <option value="E">E</option>
+                    </select></p>
+
+                    <!--Lista ATS obtidos pelo(a) ATE-->
+                    <label for="ats"><h2 id="titulo">Selecione a quantidade de Adicionais de Tempo de Serviço:</h2></label>
+                    <p><select name="ats" id="ats" onchange="screenUpdate()">
+                        <option value="0" selected>0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    </select></p>
+
+                    <!--<h2>Selecione a data de início da licença:</h2>         
+                        <input type="date" id="idate" onchange="dateCheck()" required/>   
+                    <br>    
+                    <h2>Digite o número de dias da licença:</h2>  
+                        <input type="number" id="inumber" min="1" onchange="numberCheck()" required/>
+                    <br>
+                    <h2>Clique no botão abaixo para fazer o cálculo:</h2>
+                        <input type="submit" id="isubmit" value="Calcular data" onclick="calcDate()"/>
+                    <p id="result"></p>-->
+                </form>
+        </body>
+</html>
