@@ -1,0 +1,264 @@
+/* Config for small screens - DONE*/
+@media only screen and (min-width:320px) {
+    body {
+        min-height: 95vh;
+        background:linear-gradient(25deg,#2B0A93, #22276E);
+        padding-top: 3%;
+        padding-left: 8%;
+        padding-right: 8%;
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:1.2em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:3.1em;
+    }
+    #titulo {
+        text-align:center;
+        font-size:1.8em;
+    }
+    #referencias {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #graus {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #ats {
+        text-align:center;
+        font-size:0.5em;
+    }
+    p {
+        font-size: 2.3em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    .brnodisplay {
+        display: none;
+    }
+}
+
+/* Config for small devices and most mobile phones*/
+@media screen and (min-width:480px) {
+    body {
+        min-height: 94vh;
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
+        padding-top: 3%;
+        padding-left: 8%;
+        padding-right: 8%;
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:1.1em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:3.1em;
+    }
+    #titulo {
+        text-align:center;
+        font-size:1.5em;
+    }
+    #referencias {
+        text-align:center;
+        font-size:0.8em;
+    }
+    #graus {
+        text-align:center;
+        font-size:0.8em;
+    }
+    #ats {
+        text-align:center;
+        font-size:0.8em;
+    }
+    p {
+        font-size: 1.6em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    .brnodisplay {
+        display: none;
+    }
+}
+
+/* Config for tablets*/
+@media screen and (min-width:768px) {
+    body {
+        min-height: 93vh;
+        background:linear-gradient(25deg, #4B4E53, #000000);
+        padding-top: 3%;
+        padding-left: 8%;
+        padding-right: 8%;
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:1.2em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:3.1em;
+    }
+    #titulo {
+        text-align:center;
+        font-size:1.8em;
+    }
+    #referencias {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #graus {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #ats {
+        text-align:center;
+        font-size:0.5em;
+    }
+    p {
+        font-size: 1.6em;
+        color: orange;
+        text-align: center;
+        line-height:6vh;
+    }
+    .brnodisplay {
+        display: none;
+    }
+}
+
+/* Config for small desktops*/
+@media screen and (min-width:992px) {
+    body {
+        min-height: 92vh;
+        background:linear-gradient(25deg, #4B4E53, #000000);
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:1.2em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:3.1em;
+    }
+    #titulo {
+        text-align:center;
+        font-size:1.8em;
+    }
+    #referencias {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #graus {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #ats {
+        text-align:center;
+        font-size:0.5em;
+    }
+    p {
+        font-size:1.6em;
+        color: orange;
+        text-align: center;
+        line-height:4vh;
+    }
+}
+
+/* Config for large devices and wide screens*/
+@media screen and (min-width:1200px) {
+    body {
+        min-height: 100vh;
+        background:linear-gradient(25deg, #4B4E53, #000000);
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:1.2em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:3.1em;
+    }
+    #titulo {
+        text-align:center;
+        font-size:1.8em;
+    }
+    #referencias {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #graus {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #ats {
+        text-align:center;
+        font-size:0.5em;
+    }
+    p {
+        font-size: 2.3em;
+        color: orange;
+        text-align: center;
+        line-height:4vh;
+    }
+}
+
+/* Config for large devices and wide screens - My PC included*/
+@media screen and (min-width:1366px) {
+    body {
+        min-height: 93vh;
+        background:linear-gradient(25deg, #4B4E53, #000000);
+        padding-top: 2%;
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:1.2em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:3.1em;
+    }
+    #titulo {
+        text-align:center;
+        font-size:1.8em;
+    }
+    #referencias {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #graus {
+        text-align:center;
+        font-size:0.5em;
+    }
+    #ats {
+        text-align:center;
+        font-size:0.5em;
+    }
+    p {
+        font-size: 1.4em;
+        color: orange;
+        text-align: center;
+        line-height:8vh;
+    }
+}
