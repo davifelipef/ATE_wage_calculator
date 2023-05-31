@@ -1,8 +1,8 @@
-/* Config for small screens - DONE*/
+/* Config for small screens - My phone included*/
 @media only screen and (min-width:320px) {
     body {
         min-height: 95vh;
-        background:linear-gradient(25deg,#2B0A93, #22276E);
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 3%;
         padding-left: 8%;
         padding-right: 8%;
@@ -24,15 +24,15 @@
     }
     #referencias {
         text-align:center;
-        font-size:0.5em;
+        font-size:0.7em;
     }
     #graus {
         text-align:center;
-        font-size:0.5em;
+        font-size:0.7em;
     }
     #ats {
         text-align:center;
-        font-size:0.5em;
+        font-size:0.7em;
     }
     p {
         font-size: 2.3em;
