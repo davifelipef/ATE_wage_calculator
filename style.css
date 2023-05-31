@@ -17,6 +17,14 @@
     #proventos {
         text-align:center;
         font-size:3.1em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    #details {
+        text-align:center;
+        font-size:0.9em;
+        line-height:1vh;
     }
     #titulo {
         text-align:center;
@@ -24,20 +32,17 @@
     }
     #referencias {
         text-align:center;
-        font-size:0.7em;
+        font-size:1.2em;
+        line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:0.7em;
+        font-size:1.2em;
+        line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:0.7em;
-    }
-    p {
-        font-size: 2.3em;
-        color: orange;
-        text-align: center;
+        font-size:1.2em;
         line-height:1vh;
     }
     .brnodisplay {
@@ -64,6 +69,14 @@
     #proventos {
         text-align:center;
         font-size:3.1em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    #details {
+        text-align:center;
+        font-size:0.9em;
+        line-height:1vh;
     }
     #titulo {
         text-align:center;
@@ -71,20 +84,17 @@
     }
     #referencias {
         text-align:center;
-        font-size:0.8em;
+        font-size:1.2em;
+        line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:0.8em;
+        font-size:1.2em;
+        line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:0.8em;
-    }
-    p {
-        font-size: 1.6em;
-        color: orange;
-        text-align: center;
+        font-size:1.2em;
         line-height:1vh;
     }
     .brnodisplay {
@@ -111,31 +121,37 @@
     #proventos {
         text-align:center;
         font-size:3.1em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    #details {
+        text-align:center;
+        font-size:0.9em;
+        line-height:1vh;
     }
     #titulo {
         text-align:center;
         font-size:1.8em;
+        line-height:7vh;
     }
     #referencias {
         text-align:center;
-        font-size:0.5em;
+        font-size:1.3em;
+        line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:0.5em;
+        font-size:1.3em;
+        line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:0.5em;
-    }
-    p {
-        font-size: 1.6em;
-        color: orange;
-        text-align: center;
-        line-height:6vh;
+        font-size:1.3em;
     }
     .brnodisplay {
         display: none;
+        line-height:1vh;
     }
 }
 
@@ -155,6 +171,14 @@
     #proventos {
         text-align:center;
         font-size:3.1em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    #details {
+        text-align:center;
+        font-size:0.9em;
+        line-height:1vh;
     }
     #titulo {
         text-align:center;
@@ -162,21 +186,18 @@
     }
     #referencias {
         text-align:center;
-        font-size:0.5em;
+        font-size:1.5em;
+        line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:0.5em;
+        font-size:1.5em;
+        line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:0.5em;
-    }
-    p {
-        font-size:1.6em;
-        color: orange;
-        text-align: center;
-        line-height:4vh;
+        font-size:1.5em;
+        line-height:1vh;
     }
 }
 
@@ -196,6 +217,14 @@
     #proventos {
         text-align:center;
         font-size:3.1em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    #details {
+        text-align:center;
+        font-size:0.9em;
+        line-height:1vh;
     }
     #titulo {
         text-align:center;
@@ -203,21 +232,18 @@
     }
     #referencias {
         text-align:center;
-        font-size:0.5em;
+        font-size:1.5em;
+        line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:0.5em;
+        font-size:1.5em;
+        line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:0.5em;
-    }
-    p {
-        font-size: 2.3em;
-        color: orange;
-        text-align: center;
-        line-height:4vh;
+        font-size:1.5em;
+        line-height:1vh;
     }
 }
 
@@ -238,6 +264,14 @@
     #proventos {
         text-align:center;
         font-size:3.1em;
+        color: orange;
+        text-align: center;
+        line-height:1vh;
+    }
+    #details {
+        text-align:center;
+        font-size:0.9em;
+        line-height:1vh;
     }
     #titulo {
         text-align:center;
@@ -254,11 +288,5 @@
     #ats {
         text-align:center;
         font-size:0.5em;
-    }
-    p {
-        font-size: 1.4em;
-        color: orange;
-        text-align: center;
-        line-height:8vh;
     }
 }
