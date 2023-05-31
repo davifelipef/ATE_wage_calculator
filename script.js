@@ -282,7 +282,92 @@ function sumValues(pattern, ats_number) {
             // Updates the total to be received to the liquid wage field
             document.getElementById("proventos").innerHTML = total.toFixed(2);
             break;
-            
+        
+        case "QPE01D":
+        case "QPE02C":
+        case "QPE03B":
+        case "QPE04A":
+            // Sets the pattern variable
+            pattern_value = 1808.23;
+            // Sets the hard access variable
+            hard_access = 275.00;
+            // Creates the fod aid variable
+            food_aid = 600.00;
+            // Creates the meal aid variable
+            meal_aid = 450.00;
+            // Creates previdenciary pattern
+            prev_pattern = 0;
+            // Calculates the allowance by subtraing the pattern from the minimum wage
+            allowance = (minimum_wage - pattern_value).toFixed(2);
+            // Log for debugging
+            console.log("Abono: " + allowance); 
+            // Creates and calculates the salary for the funprev discount of 14%
+            prev_pattern = (
+                // Sums the wage, the allowance and the hard access
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(hard_access)).toFixed(2);
+            // Log for debugging
+            console.log("Salário para fins de desconto previdenciário: " + 
+            prev_pattern); 
+            // Funprev costs 14% per month
+            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+            console.log("Desconto Funprev: " + funprev);
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access) -
+                parseFloat(funprev)).toFixed(2);
+            // Log for debugging
+            console.log("Salário líquido: " + liquid_wage)
+            // Calculates the value of the ATS
+            switch (ats_number) {
+                // Do nothing if there is 0 ATS
+                case "0":
+                    break;
+                // Calculates the value of the 1st ATS
+                case "1":
+                    // 1st ATS is 5%
+                    ats_value = ((5 / 100) * pattern_value).toFixed(2);
+                    // Log for debugging
+                    console.log("ATS: " + ats_value);
+                    break;
+                case "2":
+                    // 2nd ATS is 10.25%
+                    ats_value = ((10.25 / 100) * pattern_value).toFixed(2);
+                    break;
+                case "3":
+                    // 3rd ATS is 15.76%
+                    ats_value = ((15.76 / 100) * pattern_value).toFixed(2);
+                    break;
+                case "4":
+                    // 4th ATS is 21.55%
+                    ats_value = ((21.55 / 100) * pattern_value).toFixed(2);
+                    break;
+                case "5":
+                    // 5th ATS is 27.63%
+                    ats_value = ((27.63 / 100) * pattern_value).toFixed(2);
+                    break;
+                case "6":
+                    // 6th ATS is 34.01%
+                    ats_value = ((34.01 / 100) * pattern_value).toFixed(2);
+                    break;
+                case "7":
+                    // 7th ATS is 40.71%
+                    ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
+                    break;
+            }
+            // Sums the pattern and the ATS values
+            total = parseFloat(liquid_wage) + parseFloat(ats_value);
+            // Log for debugging
+            console.log("total is: " + total.toFixed(2))
+            // Updates the total to be received to the liquid wage field
+            document.getElementById("proventos").innerHTML = total.toFixed(2);
+            break;
+        
         case "QPE01E":
         case "QPE02D":
         case "QPE03C":
@@ -368,92 +453,6 @@ function sumValues(pattern, ats_number) {
             // Updates the total to be received to the liquid wage field
             document.getElementById("proventos").innerHTML = total.toFixed(2);
             break;
-        
-            case "QPE01D":
-                case "QPE02C":
-                case "QPE03B":
-                case "QPE04A":
-                    // Sets the pattern variable
-                    pattern_value = 1808.23;
-                    // Sets the hard access variable
-                    hard_access = 275.00;
-                    // Creates the fod aid variable
-                    food_aid = 600.00;
-                    // Creates the meal aid variable
-                    meal_aid = 450.00;
-                    // Creates previdenciary pattern
-                    prev_pattern = 0;
-                    // Calculates the allowance by subtraing the pattern from the minimum wage
-                    allowance = (minimum_wage - pattern_value).toFixed(2);
-                    // Log for debugging
-                    console.log("Abono: " + allowance); 
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and the hard access
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access)).toFixed(2);
-                    // Log for debugging
-                    console.log("Salário para fins de desconto previdenciário: " + 
-                    prev_pattern); 
-                    // Funprev costs 14% per month
-                    funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    console.log("Desconto Funprev: " + funprev);
-                    // Calculates the liquid wage
-                    var liquid_wage = (
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(food_aid) +
-                        parseFloat(meal_aid) +
-                        parseFloat(hard_access) -
-                        parseFloat(funprev)).toFixed(2);
-                    // Log for debugging
-                    console.log("Salário líquido: " + liquid_wage)
-                    // Calculates the value of the ATS
-                    switch (ats_number) {
-                        // Do nothing if there is 0 ATS
-                        case "0":
-                            break;
-                        // Calculates the value of the 1st ATS
-                        case "1":
-                            // 1st ATS is 5%
-                            ats_value = ((5 / 100) * pattern_value).toFixed(2);
-                            // Log for debugging
-                            console.log("ATS: " + ats_value);
-                            break;
-                        case "2":
-                            // 2nd ATS is 10.25%
-                            ats_value = ((10.25 / 100) * pattern_value).toFixed(2);
-                            break;
-                        case "3":
-                            // 3rd ATS is 15.76%
-                            ats_value = ((15.76 / 100) * pattern_value).toFixed(2);
-                            break;
-                        case "4":
-                            // 4th ATS is 21.55%
-                            ats_value = ((21.55 / 100) * pattern_value).toFixed(2);
-                            break;
-                        case "5":
-                            // 5th ATS is 27.63%
-                            ats_value = ((27.63 / 100) * pattern_value).toFixed(2);
-                            break;
-                        case "6":
-                            // 6th ATS is 34.01%
-                            ats_value = ((34.01 / 100) * pattern_value).toFixed(2);
-                            break;
-                        case "7":
-                            // 7th ATS is 40.71%
-                            ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
-                            break;
-                    }
-                    // Sums the pattern and the ATS values
-                    total = parseFloat(liquid_wage) + parseFloat(ats_value);
-                    // Log for debugging
-                    console.log("total is: " + total.toFixed(2))
-                    // Updates the total to be received to the liquid wage field
-                    document.getElementById("proventos").innerHTML = total.toFixed(2);
-                    break;
-        
 
     }
 }
