@@ -279,7 +279,7 @@ function sumValues(pattern, ats_number) {
             total = parseFloat(liquid_wage) + parseFloat(ats_value);
             // Log for debugging
             console.log("total is: " + total.toFixed(2))
-            // Updates the total to be received to the liquid wage field
+            // Updates all the fields in the screen
             document.getElementById("proventos").innerHTML = total.toFixed(2);
             break;
         
