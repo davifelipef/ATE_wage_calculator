@@ -74,6 +74,7 @@ function sumValues(pattern, ats_number) {
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
                 case "0":
+                    ats_value = (0).toFixed(2);
                     break;
                 // Calculates the value of the 1st ATS
                 case "1":
@@ -112,7 +113,14 @@ function sumValues(pattern, ats_number) {
             // Log for debugging
             console.log("total is: " + total.toFixed(2))
             // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = total.toFixed(2);
+            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
+            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
+            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value
+            document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
+            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE01B":
@@ -157,6 +165,7 @@ function sumValues(pattern, ats_number) {
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
                 case "0":
+                    ats_value = (0).toFixed(2);
                     break;
                 // Calculates the value of the 1st ATS
                 case "1":
@@ -195,7 +204,14 @@ function sumValues(pattern, ats_number) {
             // Log for debugging
             console.log("total is: " + total.toFixed(2))
             // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = total.toFixed(2);
+            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
+            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
+            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
+            document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
+            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         // QPE03A is the starting value of the ATE career
@@ -242,6 +258,7 @@ function sumValues(pattern, ats_number) {
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
                 case "0":
+                    ats_value = (0).toFixed(2);
                     break;
                 // Calculates the value of the 1st ATS
                 case "1":
@@ -279,8 +296,15 @@ function sumValues(pattern, ats_number) {
             total = parseFloat(liquid_wage) + parseFloat(ats_value);
             // Log for debugging
             console.log("total is: " + total.toFixed(2))
-            // Updates all the fields in the screen
-            document.getElementById("proventos").innerHTML = total.toFixed(2);
+            // Updates the total to be received to the liquid wage field
+            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
+            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
+            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
+            document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
+            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         case "QPE01D":
@@ -327,6 +351,7 @@ function sumValues(pattern, ats_number) {
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
                 case "0":
+                    ats_value = (0).toFixed(2);
                     break;
                 // Calculates the value of the 1st ATS
                 case "1":
@@ -365,7 +390,14 @@ function sumValues(pattern, ats_number) {
             // Log for debugging
             console.log("total is: " + total.toFixed(2))
             // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = total.toFixed(2);
+            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
+            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
+            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
+            document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
+            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         case "QPE01E":
@@ -413,6 +445,7 @@ function sumValues(pattern, ats_number) {
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
                 case "0":
+                    ats_value = (0).toFixed(2);
                     break;
                 // Calculates the value of the 1st ATS
                 case "1":
@@ -451,7 +484,14 @@ function sumValues(pattern, ats_number) {
             // Log for debugging
             console.log("total is: " + total.toFixed(2))
             // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = total.toFixed(2);
+            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
+            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
+            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid.toFixed(2);
+            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
+            document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
+            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
     }
