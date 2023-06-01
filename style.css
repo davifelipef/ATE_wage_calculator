@@ -251,7 +251,7 @@
 @media screen and (min-width:1366px) {
     body {
         min-height: 93vh;
-        background:linear-gradient(25deg, #4B4E53, #000000);
+        background:linear-gradient(25deg, #32a852, #000000);
         padding-top: 2%;
         background-repeat: no-repeat;
         color: #ebeded;
