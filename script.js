@@ -30,6 +30,7 @@ function sumValues(pattern, ats_number) {
     let allowance = 0;
     // Sets the minimum wage constant
     const minimum_wage = 2130.74;
+    //const minimum_wage = 2780.61;
     // The first switch checks for the QPE
     switch (pattern) {
         // First case is the lowest wage possible
