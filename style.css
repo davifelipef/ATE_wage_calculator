@@ -159,7 +159,7 @@
 @media screen and (min-width:992px) {
     body {
         min-height: 92vh;
-        background:linear-gradient(25deg, #4B4E53, #000000);
+        background:linear-gradient(25deg,#2B0A93, #22276E);
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -205,7 +205,7 @@
 @media screen and (min-width:1200px) {
     body {
         min-height: 100vh;
-        background:linear-gradient(25deg, #4B4E53, #000000);
+        background:linear-gradient(25deg, #bab513, #000000);
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
