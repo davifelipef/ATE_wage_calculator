@@ -6,6 +6,9 @@ function screenUpdate() {
     const grad_value = document.getElementById("graus").value;
     // Gets the ATS value and saves it to a const
     const ats_number = document.getElementById("ats").value;
+    // Gets the number of working days in the month and saves it to a variable
+    const days_number = document.getElementById("dias").value;
+    console.log(days_number)
     console.log("Número de ATS é: " + ats_number)
     // Gets the pattern value by the sum of the reference and the grade
     const pattern = ref_value + grad_value;
@@ -13,11 +16,11 @@ function screenUpdate() {
     console.log("Primeiro padrão: "+ pattern);
     /* Calls the function that sums the values, and pass the pattern and
     the ATS Values to it */
-    sumValues(pattern, ats_number);
+    sumValues(pattern, ats_number, days_number);
 }
 
 // Function that sums all the values to get the final salary
-function sumValues(pattern, ats_number) {
+function sumValues(pattern, ats_number, days_number) {
     // estabilish the total as 0 initially
     let total = 0;
     let ats_value = 0;
@@ -28,6 +31,17 @@ function sumValues(pattern, ats_number) {
     let meal_aid = 0;
     let prev_pattern = 0;
     let allowance = 0;
+    // Calculates the meal aid value
+    switch(days_number) {
+        case 0:
+            meal_aid = (0).toFixed(2);
+            console.log("Zero:" + meal_aid)
+            break;
+        default:
+            meal_aid = (days_number * 25).toFixed(2);
+            console.log("More than one: " + meal_aid)
+            break;
+    }
     // Sets the minimum wage constant
     const minimum_wage = 2130.74;
     //const minimum_wage = 2780.61;
@@ -41,8 +55,6 @@ function sumValues(pattern, ats_number) {
             hard_access = 275.00;
             // Creates the fod aid variable
             food_aid = 600.00;
-            // Creates the meal aid variable
-            meal_aid = 450.00;
             // Creates previdenciary pattern
             prev_pattern = 0;
             // Calculates the allowance by subtraing the pattern from the minimum wage
@@ -118,7 +130,7 @@ function sumValues(pattern, ats_number) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value
             document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
             document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
@@ -132,8 +144,6 @@ function sumValues(pattern, ats_number) {
             hard_access = 275.00;
             // Creates the fod aid variable
             food_aid = 600.00;
-            // Creates the meal aid variable
-            meal_aid = 450.00;
             // Creates previdenciary pattern
             prev_pattern = 0;
             // Calculates the allowance by subtraing the pattern from the minimum wage
@@ -209,7 +219,7 @@ function sumValues(pattern, ats_number) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
             document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
@@ -225,8 +235,6 @@ function sumValues(pattern, ats_number) {
             hard_access = 275.00;
             // Creates the fod aid variable
             food_aid = 600.00;
-            // Creates the meal aid variable
-            meal_aid = 450.00;
             // Creates previdenciary pattern
             prev_pattern = 0;
             // Calculates the allowance by subtraing the pattern from the minimum wage
@@ -302,7 +310,7 @@ function sumValues(pattern, ats_number) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
             document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
@@ -318,8 +326,6 @@ function sumValues(pattern, ats_number) {
             hard_access = 275.00;
             // Creates the fod aid variable
             food_aid = 600.00;
-            // Creates the meal aid variable
-            meal_aid = 450.00;
             // Creates previdenciary pattern
             prev_pattern = 0;
             // Calculates the allowance by subtraing the pattern from the minimum wage
@@ -395,7 +401,7 @@ function sumValues(pattern, ats_number) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
             document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
@@ -412,8 +418,6 @@ function sumValues(pattern, ats_number) {
             hard_access = 275.00;
             // Creates the fod aid variable
             food_aid = 600.00;
-            // Creates the meal aid variable
-            meal_aid = 450.00;
             // Creates previdenciary pattern
             prev_pattern = 0;
             // Calculates the allowance by subtraing the pattern from the minimum wage
@@ -489,7 +493,7 @@ function sumValues(pattern, ats_number) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid.toFixed(2);
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             document.getElementById("gratificacao").innerHTML = "Gratificação Difícil Acesso: + R$ "+hard_access.toFixed(2);
             document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
