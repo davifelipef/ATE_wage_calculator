@@ -3,23 +3,28 @@
     body {
         min-height: 95vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
-        padding-top: 3%;
+        padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
+        padding-bottom: 2%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
     }
+    #site_name {
+        text-align: center;
+        font-size:1.4em;
+    }
     #proventos_label {
         text-align:center;
-        font-size:1.2em;
+        font-size:1em;
     }
     #proventos {
         text-align:center;
-        font-size:3.1em;
+        font-size:3em;
         color: orange;
         text-align: center;
-        line-height:1vh;
+        line-height:0.1vh;
     }
     #details {
         text-align:center;
@@ -28,46 +33,39 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.2em;
+        font-size:1.1em;
     }
-    #table {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    #referencias {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.2em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-size:1.1em;
         line-height:1vh;
     }
-    #graus {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.2em;
-        line-height:1vh;
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
     }
-    #ats {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.2em;
-        line-height:1vh;
-    }
-    .brnodisplay {
-        display: none;
+    .flex-item {
+    margin: 0.01em;
     }
 }
 
 /* Config for small devices and most mobile phones*/
 @media screen and (min-width:480px) {
     body {
-        min-height: 94vh;
+        min-height: 95vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
-        padding-top: 3%;
+        padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
+        padding-bottom: 1%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -92,33 +90,26 @@
         text-align:center;
         font-size:0.9em;
     }
-    #table {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    #referencias {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.2em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-size:1.1em;
         line-height:1vh;
     }
-    #graus {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.2em;
-        line-height:1vh;
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
     }
-    #ats {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.2em;
-        line-height:1vh;
-    }
-    .brnodisplay {
-        display: none;
+    .flex-item {
+    margin: 0.01em;
     }
 }
 
@@ -130,6 +121,7 @@
         padding-top: 3%;
         padding-left: 8%;
         padding-right: 8%;
+        padding-bottom: 8%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -153,32 +145,29 @@
     #titulo {
         text-align:center;
         margin-bottom: 0;
-        font-size:1.4em;
+        font-size:1em;
         line-height:7vh;
     }
-    #table {
-        margin-left: auto;
-        margin-right: auto;
-    }
-    #referencias {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.4em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-size:1.1em;
         line-height:1vh;
     }
-    #graus {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.4em;
-        line-height:1vh;
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
     }
-    #ats {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.4em;
+    .flex-item {
+    margin: 0.01em;
     }
 }
 
@@ -211,26 +200,26 @@
         text-align:center;
         font-size:1.2em;
     }
-    #referencias {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.3em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-size:1.1em;
         line-height:1vh;
     }
-    #graus {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.3em;
-        line-height:1vh;
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
     }
-    #ats {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.3em;
-        line-height:1vh;
+    .flex-item {
+    margin: 0.01em;
     }
 }
 
@@ -263,26 +252,26 @@
         text-align:center;
         font-size:1.8em;
     }
-    #referencias {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.5em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-size:1.1em;
         line-height:1vh;
     }
-    #graus {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.5em;
-        line-height:1vh;
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
     }
-    #ats {
-        text-align:center;
-        margin-left: 1.2em;
-        margin-right: 1.2em;
-        font-size:1.5em;
-        line-height:1vh;
+    .flex-item {
+    margin: 0.01em;
     }
 }
 
@@ -316,16 +305,25 @@
         text-align:center;
         font-size:1.8em;
     }
-    #referencias {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
-        font-size:1.5em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-size:1.1em;
+        line-height:1vh;
     }
-    #graus {
-        text-align:center;
-        font-size:1.5em;
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
     }
-    #ats {
-        text-align:center;
-        font-size:1.5em;
+    .flex-item {
+    margin: 0.01em;
     }
 }
