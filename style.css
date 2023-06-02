@@ -60,7 +60,7 @@
 /* Config for small screens - My phone included*/
 @media only screen and (min-width:320px) {
     body {
-        min-height: 93vh;
+        min-height: 94vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 1%;
         padding-left: 8%;
@@ -124,7 +124,7 @@
         padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
-        padding-bottom: 3%;
+        padding-bottom: 4%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
