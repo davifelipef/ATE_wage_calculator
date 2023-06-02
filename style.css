@@ -1,7 +1,7 @@
 /* Config for small screens - My phone included*/
 @media only screen and (min-width:320px) {
     body {
-        min-height: 95vh;
+        min-height: 93vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 1%;
         padding-left: 8%;
@@ -60,7 +60,7 @@
 /* Config for small devices and most mobile phones*/
 @media screen and (min-width:480px) {
     body {
-        min-height: 95vh;
+        min-height: 93vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 1%;
         padding-left: 8%;
@@ -174,7 +174,7 @@
 /* Config for small desktops*/
 @media screen and (min-width:992px) {
     body {
-        min-height: 92vh;
+        min-height: 93vh;
         background:linear-gradient(25deg,#2B0A93, #22276E);
         background-repeat: no-repeat;
         color: #ebeded;
@@ -226,8 +226,12 @@
 /* Config for large devices and wide screens*/
 @media screen and (min-width:1200px) {
     body {
-        min-height: 100vh;
+        min-height: 93vh;
         background:linear-gradient(25deg, #bab513, #000000);
+        padding-top: 1%;
+        padding-left: 8%;
+        padding-right: 8%;
+        padding-bottom: 1%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -250,13 +254,13 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.8em;
+        font-size:1.1em;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
-        font-size:1.1em;
+        font-size: 1.1em;
         line-height:1vh;
     }
     .flex-container {
@@ -280,7 +284,10 @@
     body {
         min-height: 93vh;
         background:linear-gradient(25deg, #32a852, #000000);
-        padding-top: 2%;
+        padding-top: 1%;
+        padding-left: 8%;
+        padding-right: 8%;
+        padding-bottom: 1%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -291,7 +298,7 @@
     }
     #proventos {
         text-align:center;
-        font-size:3.1em;
+        font-size:3em;
         color: orange;
         text-align: center;
         line-height:1vh;
@@ -303,7 +310,7 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.8em;
+        font-size:1.1em;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
