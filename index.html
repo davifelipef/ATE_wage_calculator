@@ -7,7 +7,7 @@
         <title>Calculadora de Salário - Auxiliar Técnico de Educação - PMSP</title>
     </head>
         <body>
-            <h1>Calculadora de Salário - Auxiliar Técnico de Educação - PMSP</h1>
+            <h1 id="site_name">Calculadora de Salário - Auxiliar Técnico de Educação - PMSP</h1>
                 <form id="calculator" action="">
                     <!--Somatória dos proventos menos os descontos-->
                     <h3 id="proventos_label">Proventos líquidos a receber:</h3>         
@@ -22,54 +22,103 @@
                         <p id="gratificacao">Gratificação Difícil Acesso: + R$ 275.00</p>
                         <p id="funprev">Funprev: - R$ 336.80</p>
                     </div>
-                    <table id="table">
-                        <tbody>
-                                <td><label for="referencias">
-                                    <h2 id="titulo">Referência:</h2>
-                                    <select name="referencias" id="referencias" onchange="screenUpdate()">
-                                        <!--Lista de referências do cargo de ATE-->
-                                        <option value="QPE01">QPE-01</option>
-                                        <option value="QPE02">QPE-02</option>
-                                        <option value="QPE03" selected>QPE-03</option>
-                                        <option value="QPE04">QPE-04</option>
-                                        <option value="QPE05">QPE-05</option>
-                                        <option value="QPE06">QPE-06</option>
-                                        <option value="QPE07">QPE-07</option>
-                                        <option value="QPE08">QPE-08</option>
-                                        <option value="QPE09">QPE-09</option>
-                                        <option value="QPE10">QPE-10</option>
-                                        <option value="QPE11">QPE-11</option>
-                                        <option value="QPE12">QPE-12</option>
-                                        <option value="QPE13">QPE-13</option>
-                                        <option value="QPE14">QPE-14</option>
-                                </label></td>
-                                <td></select> <label for="graus">
-                                    <h2 id="titulo">Grau:</h2></label>
-                                    <select name="graus" id="graus" onchange="screenUpdate()">
-                                        <!--Lista de graus do cargo de ATE-->
-                                        <option value="A" selected>A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="E">E</option>
-                                    </select>
-                                </td>
-                                <td><label for="ats">
-                                    <h2 id="titulo">ATS:</h2></label>
-                                    <select name="ats" id="ats" onchange="screenUpdate()">
-                                        <!--Lista de ATS obtidos pelo(a) ATE-->
-                                        <option value="0" selected>0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                        <option value="6">6</option>
-                                        <option value="7">7</option>
-                                    </select>
-                                </td>
-                        </tbody>
-                    </table>
-                </form>
+                    <div class="flex-container">
+                        <div class="flex-row">
+                            <div class="flex-item"><label for="referencias">
+                            <h2 id="titulo">Referência:</h2></label>
+                            <select name="referencias" id="referencias" onchange="screenUpdate()">
+                                <!--Lista de referências do cargo de ATE-->
+                                <option value="QPE01">QPE-01</option>
+                                <option value="QPE02">QPE-02</option>
+                                <option value="QPE03" selected>QPE-03</option>
+                                <option value="QPE04">QPE-04</option>
+                                <option value="QPE05">QPE-05</option>
+                                <option value="QPE06">QPE-06</option>
+                                <option value="QPE07">QPE-07</option>
+                                <option value="QPE08">QPE-08</option>
+                                <option value="QPE09">QPE-09</option>
+                                <option value="QPE10">QPE-10</option>
+                                <option value="QPE11">QPE-11</option>
+                                <option value="QPE12">QPE-12</option>
+                                <option value="QPE13">QPE-13</option>
+                                <option value="QPE14">QPE-14</option></select></div>
+                            <div class="flex-item"><label for="graus">
+                            <h2 id="titulo">Grau:</h2></label>
+                            <select name="graus" id="graus" onchange="screenUpdate()">
+                                <!--Lista de graus do cargo de ATE-->
+                                <option value="A" selected>A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                                <option value="E">E</option>
+                            </select></div>
+                            <div class="flex-item"><label for="ats">
+                            <h2 id="titulo">A.T.S.:</h2></label>
+                            <select name="ats" id="ats" onchange="screenUpdate()">
+                                <!--Lista de ATS obtidos pelo(a) ATE-->
+                                <option value="0" selected>0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                            </select></div>
+                            <div class="flex-item"><label for="dias">
+                            <h2 id="titulo">Dias úteis:</h2></label>
+                            <select name="dias" id="dias" onchange="screenUpdate()">
+                                <option value="23">23</option>
+                                <option value="22">22</option>
+                                <option value="21">21</option>
+                                <option value="20">20</option>
+                                <option value="19">19</option>
+                                <option value="18" selected>18</option>
+                                <option value="17">17</option>
+                                <option value="16">16</option>
+                                <option value="15">15</option>
+                                <option value="14">14</option>
+                                <option value="13">13</option>
+                                <option value="12">12</option>
+                                <option value="11">11</option>
+                                <option value="11">10</option>
+                                <option value="9">9</option>
+                                <option value="8">8</option>
+                                <option value="7">7</option>
+                                <option value="6">6</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                                <option value="0">0</option>
+                            </select></div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="flex-item"><label for="dificil_acesso">
+                            <h2 id="titulo">D.A.:</h2></label>
+                            <select name="dificl_acesso" id="dificil_acesso" onchange="screenUpdate()">
+                                <option value="" selected disabled hidden></option>
+                                <option value="faixa_1">Faixa 1</option>
+                                <option value="faixa_2">Faixa 2</option>
+                                <option value="faixa_3">Faixa 3</option>
+                            </select></div>
+                            <div class="flex-item"><label for="ou">
+                            <h2 id="titulo">OU</h2></label></div>
+                            <div class="flex-item"><label for="dificil_lotacao">
+                            <h2 id="titulo">D.L.:</h2></label>
+                            <select name="dificil_lotacao" id="dificil_lotacao" onchange="screenUpdate()">
+                                <option value="" selected disabled hidden></option>
+                                <option value="dl_1">DL 1</option>
+                                <option value="dl_2">DL 2</option>
+                                <option value="dl_3">DL 3</option>
+                                <option value="dl_4">DL 4</option>
+                                <option value="dl_5">DL 5</option>
+                                <option value="dl_6">DL 6</option>
+                            </select>
+                        </div>      
+                    </div>        
+                </div>
+            </form>
         </body>
 </html>
