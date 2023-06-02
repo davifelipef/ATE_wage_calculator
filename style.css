@@ -1,3 +1,62 @@
+/* Config for even smaller screens*/
+@media only screen and (min-width:280px) {
+    body {
+        min-height: 93vh;
+        background:linear-gradient(25deg,#2B0A93, #22276E);
+        padding-top: 1%;
+        padding-left: 8%;
+        padding-right: 8%;
+        padding-bottom: 6%;
+        background-repeat: no-repeat;
+        color: #ebeded;
+        text-align:center;
+    }
+    #site_name {
+        text-align: center;
+        font-size:1em;
+    }
+    #proventos_label {
+        text-align:center;
+        font-size:0.8em;
+    }
+    #proventos {
+        text-align:center;
+        font-size:2.3em;
+        color: orange;
+        text-align: center;
+        line-height: 0%;
+    }
+    #details {
+        text-align:center;
+        font-size:0.8em;
+        line-height:1vh;
+    }
+    #titulo {
+        text-align:center;
+        font-size:0.8em;
+    }
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+        text-align:center;
+        margin-left: 0.5em;
+        margin-right: 0.5em;
+        font-size:0.8em;
+        line-height:1vh;
+    }
+    .flex-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      
+    .flex-row {
+    display: flex;
+    justify-content: center;
+    }
+    .flex-item {
+    margin: 0.01em;
+    }
+}
+
 /* Config for small screens - My phone included*/
 @media only screen and (min-width:320px) {
     body {
@@ -6,7 +65,7 @@
         padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
-        padding-bottom: 2%;
+        padding-bottom: 4%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -65,7 +124,7 @@
         padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
-        padding-bottom: 1%;
+        padding-bottom: 3%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
