@@ -28,20 +28,30 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.8em;
+        font-size:1.2em;
+    }
+    #table {
+        margin-left: auto;
+        margin-right: auto;
     }
     #referencias {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.2em;
         line-height:1vh;
     }
     #graus {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.2em;
         line-height:1vh;
     }
     #ats {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.2em;
         line-height:1vh;
     }
@@ -80,20 +90,30 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.5em;
+        font-size:0.9em;
+    }
+    #table {
+        margin-left: auto;
+        margin-right: auto;
     }
     #referencias {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.2em;
         line-height:1vh;
     }
     #graus {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.2em;
         line-height:1vh;
     }
     #ats {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.2em;
         line-height:1vh;
     }
@@ -132,26 +152,33 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.8em;
+        margin-bottom: 0;
+        font-size:1.4em;
         line-height:7vh;
+    }
+    #table {
+        margin-left: auto;
+        margin-right: auto;
     }
     #referencias {
         text-align:center;
-        font-size:1.7em;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
+        font-size:1.4em;
         line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:1.7em;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
+        font-size:1.4em;
         line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:1.7em;
-    }
-    .brnodisplay {
-        display: none;
-        line-height:1vh;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
+        font-size:1.4em;
     }
 }
 
@@ -182,21 +209,27 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.8em;
+        font-size:1.2em;
     }
     #referencias {
         text-align:center;
-        font-size:1.5em;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
+        font-size:1.3em;
         line-height:1vh;
     }
     #graus {
         text-align:center;
-        font-size:1.5em;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
+        font-size:1.3em;
         line-height:1vh;
     }
     #ats {
         text-align:center;
-        font-size:1.5em;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
+        font-size:1.3em;
         line-height:1vh;
     }
 }
@@ -232,16 +265,22 @@
     }
     #referencias {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.5em;
         line-height:1vh;
     }
     #graus {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.5em;
         line-height:1vh;
     }
     #ats {
         text-align:center;
+        margin-left: 1.2em;
+        margin-right: 1.2em;
         font-size:1.5em;
         line-height:1vh;
     }
