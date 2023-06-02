@@ -97,7 +97,7 @@
                         <div class="flex-row">
                             <div class="flex-item"><label for="dificil_acesso">
                             <h2 id="titulo">D.A.:</h2></label>
-                            <select name="dificl_acesso" id="dificil_acesso" onchange="screenUpdate()">
+                            <select name="dificl_acesso" id="dificil_acesso" onchange="screenUpdate(); updateSelects();">
                                 <option value="" selected disabled hidden></option>
                                 <option value="faixa_1">Faixa 1</option>
                                 <option value="faixa_2">Faixa 2</option>
@@ -107,7 +107,7 @@
                             <h2 id="titulo">OU</h2></label></div>
                             <div class="flex-item"><label for="dificil_lotacao">
                             <h2 id="titulo">D.L.:</h2></label>
-                            <select name="dificil_lotacao" id="dificil_lotacao" onchange="screenUpdate()">
+                            <select name="dificil_lotacao" id="dificil_lotacao" onchange="screenUpdate(); updateSelects();">
                                 <option value="" selected disabled hidden></option>
                                 <option value="dl_1">DL 1</option>
                                 <option value="dl_2">DL 2</option>
