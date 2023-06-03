@@ -92,13 +92,13 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.1em;
+        font-size:0.9em;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
         margin-left: 1em;
-        margin-right: 1em;
-        font-size:1.1em;
+        margin-right: 1.2em;
+        font-size:0.9em;
         line-height:1vh;
     }
     .flex-container {
