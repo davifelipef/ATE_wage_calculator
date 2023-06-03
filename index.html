@@ -11,7 +11,7 @@
                 <form id="calculator" action="">
                     <!--Somatória dos proventos menos os descontos-->
                     <h3 id="proventos_label">Proventos líquidos a receber:</h3>         
-                        <p id="proventos">R$ 3118.94</p>   
+                        <p id="proventos">R$ 2885.01</p>   
                     <h4 id="detalhes">Detalhes:</h4>
                     <div id = "details">
                         <p id="salario">Salário: + R$ 1697.84</p> 
@@ -20,7 +20,7 @@
                         <p id="auxilio">Auxílio Refeição: + R$ 450.00</p>
                         <p id="ats_detail">Adicional por Tempo de Serviço: + R$ 0.00</p>
                         <p id="gratificacao">Gratificação D.A. ou D.L. (selecione): + R$ 0.00</p>
-                        <p id="funprev">Funprev: - R$ 336.80</p>
+                        <p id="funprev">Funprev: - R$ 298,31</p>
                     </div>
                     <div class="flex-container">
                         <div class="flex-row">
@@ -97,7 +97,7 @@
                         <div class="flex-row">
                             <div class="flex-item"><label for="dificil_acesso">
                             <h2 id="titulo">D.A.:</h2></label>
-                            <select name="dificl_acesso" id="dificil_acesso" onchange="screenUpdate(); updateSelects();">
+                            <select name="dificl_acesso" id="dificil_acesso" onchange="updateSelects()">
                                 <option value="" selected disabled hidden></option>
                                 <option value="faixa_1">Faixa 1</option>
                                 <option value="faixa_2">Faixa 2</option>
@@ -107,7 +107,7 @@
                             <h2 id="titulo">OU</h2></label></div>
                             <div class="flex-item"><label for="dificil_lotacao">
                             <h2 id="titulo">D.L.:</h2></label>
-                            <select name="dificil_lotacao" id="dificil_lotacao" onchange="screenUpdate(); updateSelects();">
+                            <select name="dificil_lotacao" id="dificil_lotacao" onchange="updateSelects()">
                                 <option value="" selected disabled hidden></option>
                                 <option value="dl_1">DL 1</option>
                                 <option value="dl_2">DL 2</option>
