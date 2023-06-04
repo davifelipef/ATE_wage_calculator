@@ -2,7 +2,7 @@
 @media only screen and (min-width:280px) {
     body {
         min-height: 93vh;
-        background:linear-gradient(25deg,#2B0A93, #22276E);
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
@@ -153,7 +153,7 @@
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
-        font-size:1.1em;
+        font-size:0.9em;
         line-height:1vh;
     }
     .flex-container {
@@ -176,7 +176,7 @@
 @media screen and (min-width:768px) {
     body {
         min-height: 93vh;
-        background:linear-gradient(25deg, #4B4E53, #000000);
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 3%;
         padding-left: 8%;
         padding-right: 8%;
@@ -204,14 +204,14 @@
     #titulo {
         text-align:center;
         margin-bottom: 0;
-        font-size:1em;
+        font-size:0.9em;
         line-height:7vh;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
-        font-size:1.1em;
+        font-size:0.9em;
         line-height:1vh;
     }
     .flex-container {
@@ -234,14 +234,14 @@
 @media screen and (min-width:992px) {
     body {
         min-height: 93vh;
-        background:linear-gradient(25deg,#2B0A93, #22276E);
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
     }
     #proventos_label {
         text-align:center;
-        font-size:1.2em;
+        font-size:1.1em;
     }
     #proventos {
         text-align:center;
@@ -252,18 +252,18 @@
     }
     #details {
         text-align:center;
-        font-size:0.9em;
+        font-size:0.8em;
         line-height:1vh;
     }
     #titulo {
         text-align:center;
-        font-size:1.2em;
+        font-size:1em;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
-        font-size:1.1em;
+        font-size:0.9em;
         line-height:1vh;
     }
     .flex-container {
@@ -286,7 +286,7 @@
 @media screen and (min-width:1200px) {
     body {
         min-height: 93vh;
-        background:linear-gradient(25deg, #bab513, #000000);
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
@@ -297,7 +297,7 @@
     }
     #proventos_label {
         text-align:center;
-        font-size:1.2em;
+        font-size:1em;
     }
     #proventos {
         text-align:center;
@@ -308,18 +308,18 @@
     }
     #details {
         text-align:center;
-        font-size:0.9em;
+        font-size:0.8em;
         line-height:1vh;
     }
     #titulo {
         text-align:center;
-        font-size:1.1em;
+        font-size:0.9em;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
-        font-size: 1.1em;
+        font-size: 0.9em;
         line-height:1vh;
     }
     .flex-container {
@@ -328,7 +328,6 @@
         align-items: center;
         flex-wrap: wrap;
       }
-      
     .flex-row {
     display: flex;
     justify-content: center;
@@ -342,7 +341,7 @@
 @media screen and (min-width:1366px) {
     body {
         min-height: 93vh;
-        background:linear-gradient(25deg, #32a852, #000000);
+        background:linear-gradient(25deg, #4B4E53, #e60b0b);
         padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
@@ -353,7 +352,7 @@
     }
     #proventos_label {
         text-align:center;
-        font-size:1.2em;
+        font-size:1em;
     }
     #proventos {
         text-align:center;
@@ -369,13 +368,13 @@
     }
     #titulo {
         text-align:center;
-        font-size:1.1em;
+        font-size:0.9em;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
-        font-size:1.1em;
+        font-size:0.9em;
         line-height:1vh;
     }
     .flex-container {
