@@ -21,7 +21,7 @@
     }
     #proventos {
         text-align:center;
-        font-size:2.3em;
+        font-size:2em;
         color: orange;
         text-align: center;
         line-height: 0%;
@@ -34,14 +34,13 @@
     #titulo {
         text-align:center;
         font-size:0.8em;
-        line-height: 3vh;
+        line-height: 2vh;
     }
     #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_prev {
         text-align:center;
         margin-left: 0.5em;
         margin-right: 0.5em;
         font-size:0.8em;
-        line-height:1vh;
     }
     .flex-container {
         display: flex;
@@ -100,7 +99,6 @@
         margin-left: 1em;
         margin-right: 1.2em;
         font-size:0.9em;
-        line-height:1vh;
     }
     .flex-container {
         display: flex;
@@ -178,10 +176,10 @@
     body {
         min-height: 93vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
-        padding-top: 3%;
+        padding-top: 1%;
         padding-left: 8%;
         padding-right: 8%;
-        padding-bottom: 8%;
+        padding-bottom: 2%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
@@ -236,6 +234,10 @@
     body {
         min-height: 93vh;
         background:linear-gradient(25deg, #4B4E53, #e60b0b);
+        padding-top: 1%;
+        padding-left: 8%;
+        padding-right: 8%;
+        padding-bottom: 3%;
         background-repeat: no-repeat;
         color: #ebeded;
         text-align:center;
