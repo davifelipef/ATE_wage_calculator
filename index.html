@@ -12,7 +12,7 @@
                     <!--Somatória dos proventos menos os descontos-->
                     <h3 id="proventos_label">Proventos líquidos a receber:</h3>         
                         <p id="proventos">R$ 2885.01</p>   
-                    <h4 id="detalhes">Detalhes:</h4>
+                    <h4 id="titulo">Detalhes:</h4>
                     <div id = "details">
                         <p id="salario">Salário: + R$ 1697.84</p> 
                         <p id="abono">Abono Complementar: + R$ 432.90</p>
@@ -103,8 +103,6 @@
                                 <option value="faixa_2">Faixa 2</option>
                                 <option value="faixa_3">Faixa 3</option>
                             </select></div>
-                            <div class="flex-item"><label for="ou">
-                            <h2 id="titulo">OU</h2></label></div>
                             <div class="flex-item"><label for="dificil_lotacao">
                             <h2 id="titulo">D.L.:</h2></label>
                             <select name="dificil_lotacao" id="dificil_lotacao" onchange="updateSelects()">
@@ -115,10 +113,11 @@
                                 <option value="dl_4">DL 4</option>
                                 <option value="dl_5">DL 5</option>
                                 <option value="dl_6">DL 6</option>
-                                </select></div>      
+                                </select>
+                            </div>      
                             <div class="flex-item"><label for="desconto_prev">
-                                <h2 id="titulo">Desconto Prev.:</h2></label>
-                                <select name="desconto_prev" id="desconto_prev" onchange="updateSelects()">
+                            <h2 id="titulo">Desconto Prev.:</h2></label>
+                            <select name="desconto_prev" id="desconto_prev" onchange="updateSelects()">
                                 <option value="" selected disabled hidden></option>
                                 <option value="dl_1">Funfin</option>
                                 <option value="dl_2">Funprev</option>
