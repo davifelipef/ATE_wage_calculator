@@ -1,15 +1,28 @@
+// Activates the change between the options D.A. and D.L.
 window.onload = function() {
     updateSelects();
 };
 
-// Call the function to reset the QPE when the page is reloaded
+// Call the function to reset all the options when the page is reloaded
 window.addEventListener("load", resetSelectedOption);
 
-// Function that resets the QPE on page reload
+// Function that resets the all the selected options on page reload
 function resetSelectedOption() {
-    var selectElement = document.getElementById("referencias");
+    var select_ref = document.getElementById("referencias");
+    var select_grau = document.getElementById("graus");
+    var select_ats = document.getElementById("ats");
+    var select_days = document.getElementById("dias");
+    var select_access = document.getElementById("dificil_acesso");
+    var select_occup = document.getElementById("dificil_lotacao");
+    var select_prev = document.getElementById("desconto_prev");
     // Index 2 corresponds to the default option, QPE03A
-    selectElement.selectedIndex = 2;
+    select_ref.selectedIndex = 2;
+    select_grau.selectedIndex = 0;
+    select_ats.selectedIndex = 0;
+    select_days.selectedIndex = 5;
+    select_access.selectedIndex = 0;
+    select_occup.selectedIndex = 0;
+    select_prev.selectedIndex = 0;
 }
 
 // Function called whenever a field is changed
