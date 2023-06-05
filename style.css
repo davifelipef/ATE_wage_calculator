@@ -28,14 +28,15 @@
     }
     #details {
         text-align:center;
-        font-size:0.8em;
-        line-height:1vh;
+        font-size:0.7em;
+        line-height: 1vh
     }
     #titulo {
         text-align:center;
         font-size:0.8em;
+        line-height: 3vh;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_prev {
         text-align:center;
         margin-left: 0.5em;
         margin-right: 0.5em;
@@ -53,7 +54,7 @@
     justify-content: center;
     }
     .flex-item {
-    margin: 0.01em;
+    margin: 0.1em;
     }
 }
 
@@ -94,7 +95,7 @@
         text-align:center;
         font-size:0.9em;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_pre {
         text-align:center;
         margin-left: 1em;
         margin-right: 1.2em;
@@ -149,7 +150,7 @@
         text-align:center;
         font-size:0.9em;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_pre {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
@@ -207,7 +208,7 @@
         font-size:0.9em;
         line-height:7vh;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_pre {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
@@ -259,7 +260,7 @@
         text-align:center;
         font-size:1em;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_pre {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
@@ -315,7 +316,7 @@
         text-align:center;
         font-size:0.9em;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_pre {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
@@ -370,7 +371,7 @@
         text-align:center;
         font-size:0.9em;
     }
-    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao {
+    #referencias, #graus, #ats, #dias, #dificil_acesso, #dificil_lotacao, #desconto_pre {
         text-align:center;
         margin-left: 1em;
         margin-right: 1em;
