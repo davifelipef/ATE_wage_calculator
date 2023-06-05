@@ -2,6 +2,16 @@ window.onload = function() {
     updateSelects();
 };
 
+// Call the function to reset the QPE when the page is reloaded
+window.addEventListener("load", resetSelectedOption);
+
+// Function that resets the QPE on page reload
+function resetSelectedOption() {
+    var selectElement = document.getElementById("referencias");
+    // Index 2 corresponds to the default option, QPE03A
+    selectElement.selectedIndex = 2;
+}
+
 // Function called whenever a field is changed
 function screenUpdate() {
     // Gets the reference value and saves it to a const
