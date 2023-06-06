@@ -20,7 +20,7 @@
                         <p id="auxilio">Auxílio Refeição: + R$ 450.00</p>
                         <p id="ats_detail">Adicional por Tempo de Serviço: + R$ 0.00</p>
                         <p id="gratificacao">Gratificação D.A. ou D.L. (selecione): + R$ 0.00</p>
-                        <p id="funprev">Funprev: - R$ 298,30</p>
+                        <p id="funx">Desconto Previdenciário (selecione): - R$ 0.00</p>
                     </div>
                     <div class="flex-container">
                         <div class="flex-row">
@@ -117,10 +117,10 @@
                             </div>      
                             <div class="flex-item"><label for="desconto_prev">
                             <h2 id="titulo">Desconto Prev.:</h2></label>
-                            <select name="desconto_prev" id="desconto_prev" onchange="updateSelects()">
+                            <select name="desconto_prev" id="desconto_prev" onchange="screenUpdate()">
                                 <option value="" selected disabled hidden></option>
-                                <option value="dl_1">Funfin</option>
-                                <option value="dl_2">Funprev</option>
+                                <option value="Funfin">Funfin</option>
+                                <option value="Funprev">Funprev</option>
                                 </select>
                             </div>   
                         </div>  
