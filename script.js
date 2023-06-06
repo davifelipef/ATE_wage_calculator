@@ -35,11 +35,13 @@ function screenUpdate() {
     const ats_number = document.getElementById("ats").value;
     // Gets the number of working days in the month and saves it to a variable
     const days_number = document.getElementById("dias").value;
+    // Gets the social security discount value
+    const prev_type = document.getElementById("desconto_prev").value;
     // Gets the pattern value by the sum of the reference and the grade
     const pattern = ref_value + grad_value;
     /* Calls the function that sums the values, and pass the pattern and
     the ATS Values to it */
-    sumValues(pattern, ats_number, days_number);
+    sumValues(pattern, ats_number, days_number, prev_type);
 }
 
 function updateSelects() {
@@ -51,7 +53,6 @@ function updateSelects() {
         dif_lotacao_select.value = ""; // Reset 'dificil_lotacao' value
       }
       screenUpdate();
-      //sumValues(); // Update 'gratificacao' element
     });
   
     dif_lotacao_select.addEventListener("change", function() {
@@ -59,22 +60,24 @@ function updateSelects() {
         dif_acesso_select.value = ""; // Reset 'dificil_acesso' value 
       }
       screenUpdate();
-      //sumValues(); // Update 'gratificacao' element
     });
 } 
 
 // Function that sums all the values to get the final salary
-function sumValues(pattern, ats_number, days_number) {
+function sumValues(pattern, ats_number, days_number, prev_type) {
+    // Declaration of the variables that will be used in the calculation
     let total = 0;
     let ats_value = 0;
-    let funprev = 0;
+    let social_sec_disc = 0;
     let pattern_value = 0;
     let hard_access_value = 0;
     let hard_occupation_value = 0;
-    let food_aid = 600;
+    // Food aid value is a fixed value
+    const food_aid = 600;
     let meal_aid = 0;
     let prev_pattern = 0;
     let allowance = 0;
+
     // Calculates the meal aid value
     switch(days_number) {
         case 0:
@@ -84,6 +87,7 @@ function sumValues(pattern, ats_number, days_number) {
             meal_aid = (days_number * 25).toFixed(2);
             break;
     }
+
     // Sets the minimum wage constant
     const minimum_wage = 2130.74;
     //const minimum_wage = 2780.61; - yet to be approved by law
@@ -147,33 +151,21 @@ function sumValues(pattern, ats_number, days_number) {
             break;
     }
 
+    // Main calculation
+    // First checks what is the pattern informed
     switch (pattern) {
         // First case is the lowest wage possible
         case "QPE01A":
+
             // Sets the pattern variable
             pattern_value = 1496.92;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -210,16 +202,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE01B":
@@ -231,23 +261,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -284,16 +298,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         // QPE03A is the starting value of the ATE career
@@ -307,23 +359,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -360,16 +396,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         case "QPE01D":
@@ -383,23 +457,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -436,16 +494,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         case "QPE01E":
@@ -460,23 +556,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -513,16 +593,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE02E":
@@ -537,23 +655,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -590,16 +692,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE03E":
@@ -614,23 +754,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -667,16 +791,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE04E":
@@ -691,23 +853,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -744,16 +890,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE05E":
@@ -768,23 +952,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -821,16 +989,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE06E":
@@ -845,23 +1051,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -898,16 +1088,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE07E":
@@ -922,23 +1150,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -975,16 +1187,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE08E":
@@ -999,100 +1249,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
-            // Calculates the value of the ATS
-            switch (ats_number) {
-                // Do nothing if there is 0 ATS
-                case "0":
-                    ats_value = (0).toFixed(2);
-                    break;
-                // Calculates the value of the 1st ATS
-                case "1":
-                    // 1st ATS is 5%
-                    ats_value = ((5 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "2":
-                    // 2nd ATS is 10.25%
-                    ats_value = ((10.25 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "3":
-                    // 3rd ATS is 15.76%
-                    ats_value = ((15.76 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "4":
-                    // 4th ATS is 21.55%
-                    ats_value = ((21.55 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "5":
-                    // 5th ATS is 27.63%
-                    ats_value = ((27.63 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "6":
-                    // 6th ATS is 34.01%
-                    ats_value = ((34.01 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "7":
-                    // 7th ATS is 40.71%
-                    ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
-                    break;
-            }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
-            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
-            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
-            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
-            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
-            break;
 
-        case "QPE09E":
-        case "QPE10D":
-        case "QPE11C":
-        case "QPE12B":
-        case "QPE13A":
-            // Sets the pattern variable
-            pattern_value = 3187.08;
-            // Calculates the allowance by subtracting the pattern from the minimum wage
-            allowance = (minimum_wage - pattern_value).toFixed(2);
-            if (allowance <= 0) {
-                allowance = 0;
-            }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -1129,16 +1286,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE10E":
@@ -1153,23 +1348,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -1206,16 +1385,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE11E":
@@ -1229,23 +1446,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -1282,16 +1483,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
 
         case "QPE12E":
@@ -1299,75 +1538,98 @@ function sumValues(pattern, ats_number, days_number) {
         case "QPE14C":
             // Sets the pattern variable
             pattern_value = 3849.84;
-            // Calculates the allowance by subtracting the pattern from the minimum wage
-            allowance = (minimum_wage - pattern_value).toFixed(2);
-            if (allowance <= 0) {
-                allowance = 0;
-            }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
-            // Calculates the value of the ATS
-            switch (ats_number) {
-                // Do nothing if there is 0 ATS
-                case "0":
-                    ats_value = (0).toFixed(2);
-                    break;
-                // Calculates the value of the 1st ATS
-                case "1":
-                    // 1st ATS is 5%
-                    ats_value = ((5 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "2":
-                    // 2nd ATS is 10.25%
-                    ats_value = ((10.25 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "3":
-                    // 3rd ATS is 15.76%
-                    ats_value = ((15.76 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "4":
-                    // 4th ATS is 21.55%
-                    ats_value = ((21.55 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "5":
-                    // 5th ATS is 27.63%
-                    ats_value = ((27.63 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "6":
-                    // 6th ATS is 34.01%
-                    ats_value = ((34.01 / 100) * pattern_value).toFixed(2);
-                    break;
-                case "7":
-                    // 7th ATS is 40.71%
-                    ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
-                    break;
-            }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
-            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
-            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
-            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
-            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
-            break;
+
+           // Calculates the allowance by subtracting the pattern from the minimum wage
+           allowance = (minimum_wage - pattern_value).toFixed(2);
+           if (allowance <= 0) {
+               allowance = 0;
+           }
+
+           // Calculates the value of the ATS
+           switch (ats_number) {
+               // Do nothing if there is 0 ATS
+               case "0":
+                   ats_value = (0).toFixed(2);
+                   break;
+               // Calculates the value of the 1st ATS
+               case "1":
+                   // 1st ATS is 5%
+                   ats_value = ((5 / 100) * pattern_value).toFixed(2);
+                   break;
+               case "2":
+                   // 2nd ATS is 10.25%
+                   ats_value = ((10.25 / 100) * pattern_value).toFixed(2);
+                   break;
+               case "3":
+                   // 3rd ATS is 15.76%
+                   ats_value = ((15.76 / 100) * pattern_value).toFixed(2);
+                   break;
+               case "4":
+                   // 4th ATS is 21.55%
+                   ats_value = ((21.55 / 100) * pattern_value).toFixed(2);
+                   break;
+               case "5":
+                   // 5th ATS is 27.63%
+                   ats_value = ((27.63 / 100) * pattern_value).toFixed(2);
+                   break;
+               case "6":
+                   // 6th ATS is 34.01%
+                   ats_value = ((34.01 / 100) * pattern_value).toFixed(2);
+                   break;
+               case "7":
+                   // 7th ATS is 40.71%
+                   ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
+                   break;
+           }
+           // Calculates the value of the social security discount
+           switch(prev_type) {
+               case "":
+                   document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                   break;
+               case "Funfin":
+                   // Creates and calculates the salary for the funprev discount of 14%
+                   prev_pattern = (
+                       // Sums the wage, the allowance and ats
+                       parseFloat(pattern_value) + 
+                       parseFloat(allowance) + 
+                       parseFloat(ats_value));
+                   // Social security discount costs 14% per month
+                   social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                   document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                   break;
+               case "Funprev":
+                   // Creates and calculates the salary for the funprev discount of 14%
+                   prev_pattern = (
+                       // Sums the wage, the allowance and ats
+                       parseFloat(pattern_value) + 
+                       parseFloat(allowance) + 
+                       parseFloat(hard_access_value) +
+                       parseFloat(ats_value));
+                   // Social security discount costs 14% per month
+                   social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                   document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                   break;
+           }
+           
+           // Calculates the liquid wage
+           var liquid_wage = (
+               parseFloat(pattern_value) + 
+               parseFloat(allowance) + 
+               parseFloat(food_aid) +
+               parseFloat(meal_aid) +
+               parseFloat(hard_access_value) +
+               parseFloat(hard_occupation_value) +
+               parseFloat(ats_value) - 
+               parseFloat(social_sec_disc)).toFixed(2);
+
+           // Updates all the fields not yet updated with the results
+           document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
+           document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
+           document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
+           document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
+           document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+           document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
+           break;
 
         case "QPE13E":
         case "QPE14D":
@@ -1378,23 +1640,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -1431,16 +1677,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
         
         // This is the last reference in the ATE career as of now
@@ -1452,23 +1736,7 @@ function sumValues(pattern, ats_number, days_number) {
             if (allowance <= 0) {
                 allowance = 0;
             }
-            // Creates and calculates the salary for the funprev discount of 14%
-            prev_pattern = (
-                // Sums the wage, the allowance and the hard access
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(hard_access_value));
-            // Funprev costs 14% per month
-            funprev = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-            // Calculates the liquid wage
-            var liquid_wage = (
-                parseFloat(pattern_value) + 
-                parseFloat(allowance) + 
-                parseFloat(food_aid) +
-                parseFloat(meal_aid) +
-                parseFloat(hard_access_value) +
-                parseFloat(hard_occupation_value) -
-                parseFloat(funprev)).toFixed(2);
+
             // Calculates the value of the ATS
             switch (ats_number) {
                 // Do nothing if there is 0 ATS
@@ -1505,16 +1773,54 @@ function sumValues(pattern, ats_number, days_number) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Sums the liquid wage and the ATS value
-            total = parseFloat(liquid_wage) + parseFloat(ats_value);
-            // Updates the total to be received to the liquid wage field
-            document.getElementById("proventos").innerHTML = "R$ " + total.toFixed(2);
+            // Calculates the value of the social security discount
+            switch(prev_type) {
+                case "":
+                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                    break;
+                case "Funfin":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
+                    break;
+                case "Funprev":
+                    // Creates and calculates the salary for the funprev discount of 14%
+                    prev_pattern = (
+                        // Sums the wage, the allowance and ats
+                        parseFloat(pattern_value) + 
+                        parseFloat(allowance) + 
+                        parseFloat(hard_access_value) +
+                        parseFloat(ats_value));
+                    // Social security discount costs 14% per month
+                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
+                    break;
+            }
+            
+            // Calculates the liquid wage
+            var liquid_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) + 
+                parseFloat(food_aid) +
+                parseFloat(meal_aid) +
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+
+            // Updates all the fields not yet updated with the results
+            document.getElementById("proventos").innerHTML = "R$ " + liquid_wage;
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
             document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
-            document.getElementById("funprev").innerHTML = "Funprev: - R$ "+ funprev;
             break;
     }
 }
