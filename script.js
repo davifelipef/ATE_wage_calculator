@@ -238,7 +238,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -251,7 +251,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -269,7 +269,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -281,7 +281,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -368,7 +368,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -381,7 +381,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -399,7 +399,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -411,7 +411,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -502,7 +502,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -515,7 +515,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -533,7 +533,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -545,7 +545,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -634,7 +634,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -647,7 +647,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -665,7 +665,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -677,7 +677,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -767,7 +767,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -780,7 +780,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -798,7 +798,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -810,7 +810,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -900,7 +900,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -913,7 +913,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -931,7 +931,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -943,7 +943,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1033,7 +1033,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1046,7 +1046,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1064,7 +1064,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1076,7 +1076,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1166,7 +1166,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1179,7 +1179,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1197,7 +1197,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1209,7 +1209,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1299,7 +1299,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1312,7 +1312,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1330,7 +1330,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1342,7 +1342,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1432,7 +1432,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1445,7 +1445,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1463,7 +1463,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1475,7 +1475,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1565,7 +1565,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1578,7 +1578,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1596,7 +1596,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1608,7 +1608,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1698,7 +1698,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1711,7 +1711,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1729,7 +1729,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1741,7 +1741,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1831,7 +1831,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1844,7 +1844,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1862,7 +1862,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1874,7 +1874,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1963,7 +1963,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -1976,7 +1976,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -1994,7 +1994,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -2006,7 +2006,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -2095,7 +2095,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                            parseFloat(ats_value));
                        // Social security discount costs 14% per month
                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                       document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                       document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                        social_sec_disc;
                        break;
                    case "Funprev":
@@ -2108,7 +2108,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                            parseFloat(ats_value));
                        // Social security discount costs 14% per month
                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                       document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                       document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                        social_sec_disc;
                        break;
                        }
@@ -2126,7 +2126,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                            parseFloat(ats_value));
                        // Social security discount costs 14% per month
                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                       document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                       document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                        social_sec_disc;
                        break;
                    case "Funprev":
@@ -2138,7 +2138,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                            parseFloat(ats_value));
                        // Social security discount costs 14% per month
                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                       document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                       document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                        social_sec_disc;
                        break;
                        }
@@ -2225,7 +2225,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -2238,7 +2238,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -2256,7 +2256,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -2268,7 +2268,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -2355,7 +2355,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -2368,7 +2368,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
@@ -2386,7 +2386,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ 
                         social_sec_disc;
                         break;
                     case "Funprev":
@@ -2398,7 +2398,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ 
                         social_sec_disc;
                         break;
                         }
