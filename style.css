@@ -185,6 +185,15 @@
     .flex-item {
     margin: 0.01em;
     }
+    .fins_prev_container svg {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
+    }
 }
 
 /* Config for tablets*/
@@ -243,6 +252,15 @@
     .flex-item {
     margin: 0.01em;
     }
+    .fins_prev_container svg {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
+    }
 }
 
 /* Config for small desktops*/
@@ -299,6 +317,15 @@
     .flex-item {
     margin: 0.01em;
     }
+    .fins_prev_container svg {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
+    }
 }
 
 /* Config for large devices and wide screens*/
@@ -353,6 +380,15 @@
     }
     .flex-item {
     margin: 0.01em;
+    }
+    .fins_prev_container svg {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
     }
 }
 
@@ -409,5 +445,14 @@
     }
     .flex-item {
     margin: 0.01em;
+    }
+    .fins_prev_container svg {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
     }
 }
