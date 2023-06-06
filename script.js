@@ -443,7 +443,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE03A":
 
             // Sets the pattern variable
-            pattern_value = 1697.84;
+            pattern_value = 1697.87;
 
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
@@ -1108,7 +1108,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE07B":
         case "QPE08A":
             // Sets the pattern variable
-            pattern_value = 2326.19;
+            pattern_value = 2326.21;
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
