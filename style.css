@@ -46,14 +46,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-      }
-      
+    }  
     .flex-row {
     display: flex;
     justify-content: center;
     }
     .flex-item {
     margin: 0.1em;
+    }
+    .fins_prev_container svg {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
     }
 }
 
@@ -104,14 +112,22 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-      }
-      
+    }
     .flex-row {
     display: flex;
     justify-content: center;
     }
     .flex-item {
     margin: 0.01em;
+    }
+    .fins_prev_container {
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+    .disabled {
+        opacity: 0.5; 
     }
 }
 
