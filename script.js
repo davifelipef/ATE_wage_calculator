@@ -6,6 +6,9 @@ window.onload = function() {
 // Call the function to reset all the options when the page is reloaded
 window.addEventListener("load", resetSelectedOption);
 
+// Declares the da_prev as a global variable
+var da_prev = false;
+
 // Function that resets the all the selected options on page reload
 function resetSelectedOption() {
     var select_ref = document.getElementById("referencias");
@@ -44,6 +47,23 @@ function screenUpdate() {
     sumValues(pattern, ats_number, days_number, prev_type);
 }
 
+function updateButton() {
+    /* Determines if the hard access will contribute to the social security discount or not
+    and lights the button when selected*/
+    var button = document.getElementById("button");
+    if (!button.classList.contains("colored")) {
+      button.classList.remove("disabled");
+      button.classList.add("colored");
+      da_prev = true;
+      screenUpdate();
+    } else {
+        button.classList.remove("colored");
+        button.classList.add("disabled");
+        da_prev = false;
+        screenUpdate();
+    }
+}
+
 function updateSelects() {
     var dif_acesso_select = document.getElementById("dificil_acesso");
     var dif_lotacao_select = document.getElementById("dificil_lotacao");
@@ -58,6 +78,8 @@ function updateSelects() {
     dif_lotacao_select.addEventListener("change", function() {
       if (dif_lotacao_select.value !== "") {
         dif_acesso_select.value = ""; // Reset 'dificil_acesso' value 
+        document.getElementById("button").classList.add("disabled");
+        da_prev = false;
       }
       screenUpdate();
     });
@@ -66,7 +88,6 @@ function updateSelects() {
 // Function that sums all the values to get the final salary
 function sumValues(pattern, ats_number, days_number, prev_type) {
     // Declaration of the variables that will be used in the calculation
-    let total = 0;
     let ats_value = 0;
     let social_sec_disc = 0;
     let pattern_value = 0;
@@ -202,34 +223,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -248,7 +303,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -298,34 +353,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -344,7 +433,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
         
@@ -352,8 +441,10 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE01C":
         case "QPE02B":
         case "QPE03A":
+
             // Sets the pattern variable
             pattern_value = 1697.84;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -396,34 +487,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -442,7 +567,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
         
@@ -494,34 +619,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -540,7 +699,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
         
@@ -593,34 +752,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -639,7 +832,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -649,7 +842,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE05B":
         case "QPE06A":
             // Sets the pattern variable
-            pattern_value = 2050.91;
+            pattern_value = 2050.99;
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -692,34 +885,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -738,7 +965,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -791,34 +1018,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -837,7 +1098,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -890,34 +1151,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -936,7 +1231,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -989,34 +1284,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1035,7 +1364,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -1045,7 +1374,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE09B":
         case "QPE10A":
             // Sets the pattern variable
-            pattern_value = 2638.43;
+            pattern_value = 2638.47;
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1088,34 +1417,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1134,7 +1497,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -1187,34 +1550,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) +
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1233,7 +1630,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -1286,34 +1683,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1332,7 +1763,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -1385,34 +1816,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1431,7 +1896,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -1483,34 +1948,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1529,7 +2028,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
 
@@ -1581,34 +2080,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                    ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                    break;
            }
-           // Calculates the value of the social security discount
-           switch(prev_type) {
-               case "":
-                   document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                   break;
-               case "Funfin":
-                   // Creates and calculates the salary for the funprev discount of 14%
-                   prev_pattern = (
-                       // Sums the wage, the allowance and ats
-                       parseFloat(pattern_value) + 
-                       parseFloat(allowance) + 
-                       parseFloat(ats_value));
-                   // Social security discount costs 14% per month
-                   social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                   document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                   break;
-               case "Funprev":
-                   // Creates and calculates the salary for the funprev discount of 14%
-                   prev_pattern = (
-                       // Sums the wage, the allowance and ats
-                       parseFloat(pattern_value) + 
-                       parseFloat(allowance) + 
-                       parseFloat(hard_access_value) +
-                       parseFloat(ats_value));
-                   // Social security discount costs 14% per month
-                   social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                   document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                   break;
+           if (da_prev==true) {
+               switch(prev_type) {
+                   case "":
+                       document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                       break;
+                   case "Funfin":
+                       // Creates and calculates the salary for the funprev discount of 14%
+                       prev_pattern = (
+                           // Sums the wage, the allowance, the hard access and the ats values
+                           parseFloat(pattern_value) + 
+                           parseFloat(allowance) +
+                           parseFloat(hard_access_value) +
+                           parseFloat(ats_value));
+                       // Social security discount costs 14% per month
+                       social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                       document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                       social_sec_disc;
+                       break;
+                   case "Funprev":
+                       // Creates and calculates the salary for the funprev discount of 14%
+                       prev_pattern = (
+                           // Sums the wage, the allowance, the hard access and the ats values
+                           parseFloat(pattern_value) + 
+                           parseFloat(allowance) + 
+                           parseFloat(hard_access_value) +
+                           parseFloat(ats_value));
+                       // Social security discount costs 14% per month
+                       social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                       document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                       social_sec_disc;
+                       break;
+                       }
+           } else {
+               switch(prev_type) {
+                   case "":
+                       document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                       break;
+                   case "Funfin":
+                       // Creates and calculates the salary for the funprev discount of 14%
+                       prev_pattern = (
+                           // Sums the wage, the allowance, the hard access and the ats values
+                           parseFloat(pattern_value) + 
+                           parseFloat(allowance) +
+                           parseFloat(ats_value));
+                       // Social security discount costs 14% per month
+                       social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                       document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                       social_sec_disc;
+                       break;
+                   case "Funprev":
+                       // Creates and calculates the salary for the funprev discount of 14%
+                       prev_pattern = (
+                           // Sums the wage, the allowance, the hard access and the ats values
+                           parseFloat(pattern_value) + 
+                           parseFloat(allowance) + 
+                           parseFloat(ats_value));
+                       // Social security discount costs 14% per month
+                       social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                       document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                       social_sec_disc;
+                       break;
+                       }
            }
            
            // Calculates the liquid wage
@@ -1627,7 +2160,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
            document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
            document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
            document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-           document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+           document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
            document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
            break;
 
@@ -1677,34 +2210,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1723,7 +2290,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
         
@@ -1773,34 +2340,68 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                     ats_value = ((40.71 / 100) * pattern_value).toFixed(2);
                     break;
             }
-            // Calculates the value of the social security discount
-            switch(prev_type) {
-                case "":
-                    document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
-                    break;
-                case "Funfin":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funfin: - R$ "+ social_sec_disc;
-                    break;
-                case "Funprev":
-                    // Creates and calculates the salary for the funprev discount of 14%
-                    prev_pattern = (
-                        // Sums the wage, the allowance and ats
-                        parseFloat(pattern_value) + 
-                        parseFloat(allowance) + 
-                        parseFloat(hard_access_value) +
-                        parseFloat(ats_value));
-                    // Social security discount costs 14% per month
-                    social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
-                    document.getElementById("funx").innerHTML = "Desconto Funprev: - R$ "+ social_sec_disc;
-                    break;
+            if (da_prev==true) {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(hard_access_value) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev1: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
+            } else {
+                switch(prev_type) {
+                    case "":
+                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        break;
+                    case "Funfin":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funfin2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                    case "Funprev":
+                        // Creates and calculates the salary for the funprev discount of 14%
+                        prev_pattern = (
+                            // Sums the wage, the allowance, the hard access and the ats values
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) + 
+                            parseFloat(ats_value));
+                        // Social security discount costs 14% per month
+                        social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
+                        document.getElementById("funx").innerHTML = "Desconto Funprev2: - R$ "+ 
+                        social_sec_disc;
+                        break;
+                        }
             }
             
             // Calculates the liquid wage
@@ -1819,8 +2420,8 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             document.getElementById("salario").innerHTML = "Salário: + R$ " + pattern_value.toFixed(2);
             document.getElementById("abono").innerHTML = "Abono Complementar: + R$ " + allowance;
             document.getElementById("vale").innerHTML = "Vale Alimentação: + R$ " + food_aid.toFixed(2);
-            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " +meal_aid;
+            document.getElementById("auxilio").innerHTML = "Auxílio Refeição: + R$ " + meal_aid;
             document.getElementById("ats_detail").innerHTML = "Adicional por Tempo de Serviço: + R$ " + ats_value;
             break;
+        }
     }
-}
