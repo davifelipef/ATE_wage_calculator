@@ -98,6 +98,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
     let meal_aid = 0;
     let prev_pattern = 0;
     let allowance = 0;
+    let irrf_disc = 0;
 
     // Calculates the meal aid value
     switch(days_number) {
@@ -172,6 +173,17 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             break;
     }
 
+    // Creates all the wage values that will be used for the calculations
+    const ir_v_1 = 1903.98;
+    const ir_v_2 = 2826.65;
+    const ir_v_3 = 3751.05;
+    const ir_v_4 = 4664.68;
+    var irrf_aliq = 0;
+    var irrf_due = 0;
+    var irrf_deduc = 0;
+    var depend_deduc = 0;
+    var depend_qtt = document.getElementById("dependentes").value;
+
     // Main calculation
     // First checks what is the pattern informed
     switch (pattern) {
@@ -226,7 +238,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -258,7 +270,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -286,7 +298,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -296,6 +387,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -311,6 +403,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE02A":
             // Sets the pattern variable
             pattern_value = 1594.15;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -356,7 +449,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -388,7 +481,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -416,7 +509,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -426,6 +598,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -490,7 +663,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -522,7 +695,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -550,7 +723,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -560,6 +812,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -577,6 +830,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE04A":
             // Sets the pattern variable
             pattern_value = 1808.23;
+            
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -622,7 +876,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -654,7 +908,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -682,7 +936,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -692,6 +1025,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -710,6 +1044,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE05A":
             // Sets the pattern variable
             pattern_value = 1925.76;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -755,7 +1090,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -787,7 +1122,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -815,7 +1150,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -825,6 +1239,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -843,6 +1258,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE06A":
             // Sets the pattern variable
             pattern_value = 2050.99;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -888,7 +1304,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -920,7 +1336,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -948,7 +1364,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -958,6 +1453,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -976,6 +1472,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE07A":
             // Sets the pattern variable
             pattern_value = 2184.22;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1021,7 +1518,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1053,7 +1550,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1081,7 +1578,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1091,6 +1667,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1109,6 +1686,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE08A":
             // Sets the pattern variable
             pattern_value = 2326.21;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1154,7 +1732,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1186,7 +1764,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1214,7 +1792,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1224,6 +1881,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1242,6 +1900,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE09A":
             // Sets the pattern variable
             pattern_value = 2477.39;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1287,7 +1946,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1319,7 +1978,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1347,7 +2006,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1357,6 +2095,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1375,6 +2114,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE10A":
             // Sets the pattern variable
             pattern_value = 2638.47;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1420,7 +2160,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1452,7 +2192,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1480,7 +2220,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1490,6 +2309,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1508,6 +2328,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE11A":
             // Sets the pattern variable
             pattern_value = 2809.91;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1553,7 +2374,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1585,14 +2406,14 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
                         prev_pattern = (
                             // Sums the wage, the allowance, the hard access and the ats values
-                            parseFloat(pattern_value) +
-                            parseFloat(allowance) + 
+                            parseFloat(pattern_value) + 
+                            parseFloat(allowance) +
                             parseFloat(ats_value));
                         // Social security discount costs 14% per month
                         social_sec_disc = ((14 / 100) * parseFloat(prev_pattern)).toFixed(2);
@@ -1613,7 +2434,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1623,6 +2523,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1641,6 +2542,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE12A":
             // Sets the pattern variable
             pattern_value = 2992.56;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1686,7 +2588,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1718,7 +2620,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1746,7 +2648,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1756,6 +2737,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1774,6 +2756,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE14A":
             // Sets the pattern variable
             pattern_value = 3394.24;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1819,7 +2802,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1851,7 +2834,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1879,7 +2862,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -1889,6 +2951,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -1906,6 +2969,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE14B":
             // Sets the pattern variable
             pattern_value = 3614.87;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -1951,7 +3015,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -1983,7 +3047,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -2011,7 +3075,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -2021,6 +3164,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -2083,7 +3227,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
            if (da_prev==true) {
                switch(prev_type) {
                    case "":
-                       document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                       document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                        break;
                    case "Funfin":
                        // Creates and calculates the salary for the funprev discount of 14%
@@ -2115,7 +3259,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
            } else {
                switch(prev_type) {
                    case "":
-                       document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                       document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                        break;
                    case "Funfin":
                        // Creates and calculates the salary for the funprev discount of 14%
@@ -2143,7 +3287,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                        break;
                        }
            }
+
+           // Verifies the quantity of dependents informed, and the appropriate tax deduction
+           switch(depend_qtt) {
+               case "dep_0":
+                   depend_deduc = 0;
+                   break;
+               case "dep_1":
+                   depend_deduc = 189.59;
+                   break;
+               case "dep_2":
+                   depend_deduc = 379.18;
+                   break;
+               case "dep_3":
+                   depend_deduc = 568.77;
+                   break;
+               case "dep_4":
+                   depend_deduc = 758.36;
+                   break;
+               case "dep_5":
+                   depend_deduc = 947.90;
+                   break;
+               case "dep_6":
+                   depend_deduc = 1137.54;
+                   break;
+               case "dep_7":
+                   depend_deduc = 1327.06;
+                   break;
+               case "dep_8":
+                   depend_deduc = 1516.72;
+                   break;
+               case "dep_9":
+                   depend_deduc = 1706.31;
+                   break;
+               case "dep_10":
+                   depend_deduc = 1895.9;
+                   break;
+           }
            
+           // Calculates the IRRF wage
+           var irrf_wage = (
+               parseFloat(pattern_value) + 
+               parseFloat(allowance) +  
+               parseFloat(hard_access_value) +
+               parseFloat(hard_occupation_value) +
+               parseFloat(ats_value) - 
+               parseFloat(social_sec_disc)).toFixed(2);
+           
+           // If the IRRF wage is lower than 1903.98
+           if (irrf_wage < ir_v_1) {
+               irrf_aliq = 0;
+           // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+           } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+               irrf_aliq = 0.075;
+               irrf_deduc = 142.8;
+           // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+           } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+               irrf_aliq = 0.15;
+               irrf_deduc = 354.8;
+           // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+           } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+               irrf_aliq = 0.225;
+               irrf_deduc = 636.13;
+           } else {
+               irrf_aliq = 0.275;
+               irrf_deduc = 869.36;
+           }
+           
+           /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+           deducting the deduction value and the dependent deduciton*/
+           irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+           // If the IRRF due is equal to zero or less, no IRRF is paid
+           if (irrf_due <= 0) {
+               irrf_due = 0;
+               document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+           // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+           } else {
+               document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+           }
+
            // Calculates the liquid wage
            var liquid_wage = (
                parseFloat(pattern_value) + 
@@ -2153,6 +3376,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                parseFloat(hard_access_value) +
                parseFloat(hard_occupation_value) +
                parseFloat(ats_value) - 
+               parseFloat(irrf_due) -
                parseFloat(social_sec_disc)).toFixed(2);
 
            // Updates all the fields not yet updated with the results
@@ -2168,6 +3392,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE14D":
             // Sets the pattern variable
             pattern_value = 4100.08;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -2213,7 +3438,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -2245,7 +3470,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -2273,7 +3498,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -2283,6 +3587,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
@@ -2298,6 +3603,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
         case "QPE14E":
             // Sets the pattern variable
             pattern_value = 4366.58;
+
             // Calculates the allowance by subtracting the pattern from the minimum wage
             allowance = (minimum_wage - pattern_value).toFixed(2);
             if (allowance <= 0) {
@@ -2343,7 +3649,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             if (da_prev==true) {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -2375,7 +3681,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
             } else {
                 switch(prev_type) {
                     case "":
-                        document.getElementById("funx").innerHTML = "Desconto Previdenciário (selecione): - R$ 0.00";
+                        document.getElementById("funx").innerHTML = "Desconto Funfin ou Funprev: - R$ 0.00";
                         break;
                     case "Funfin":
                         // Creates and calculates the salary for the funprev discount of 14%
@@ -2403,7 +3709,86 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                         break;
                         }
             }
+
+            // Verifies the quantity of dependents informed, and the appropriate tax deduction
+            switch(depend_qtt) {
+                case "dep_0":
+                    depend_deduc = 0;
+                    break;
+                case "dep_1":
+                    depend_deduc = 189.59;
+                    break;
+                case "dep_2":
+                    depend_deduc = 379.18;
+                    break;
+                case "dep_3":
+                    depend_deduc = 568.77;
+                    break;
+                case "dep_4":
+                    depend_deduc = 758.36;
+                    break;
+                case "dep_5":
+                    depend_deduc = 947.90;
+                    break;
+                case "dep_6":
+                    depend_deduc = 1137.54;
+                    break;
+                case "dep_7":
+                    depend_deduc = 1327.06;
+                    break;
+                case "dep_8":
+                    depend_deduc = 1516.72;
+                    break;
+                case "dep_9":
+                    depend_deduc = 1706.31;
+                    break;
+                case "dep_10":
+                    depend_deduc = 1895.9;
+                    break;
+            }
             
+            // Calculates the IRRF wage
+            var irrf_wage = (
+                parseFloat(pattern_value) + 
+                parseFloat(allowance) +  
+                parseFloat(hard_access_value) +
+                parseFloat(hard_occupation_value) +
+                parseFloat(ats_value) - 
+                parseFloat(social_sec_disc)).toFixed(2);
+            
+            // If the IRRF wage is lower than 1903.98
+            if (irrf_wage < ir_v_1) {
+                irrf_aliq = 0;
+            // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+            } else if (irrf_wage > ir_v_1 <= ir_v_2) {
+                irrf_aliq = 0.075;
+                irrf_deduc = 142.8;
+            // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
+            } else if (irrf_wage > ir_v_2 <= ir_v_3) {
+                irrf_aliq = 0.15;
+                irrf_deduc = 354.8;
+            // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
+            } else if (irrf_wage > ir_v_3 <= ir_v_4) {
+                irrf_aliq = 0.225;
+                irrf_deduc = 636.13;
+            } else {
+                irrf_aliq = 0.275;
+                irrf_deduc = 869.36;
+            }
+            
+            /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
+            deducting the deduction value and the dependent deduciton*/
+            irrf_due = ((irrf_aliq * irrf_wage) - irrf_deduc - depend_deduc).toFixed(2);
+
+            // If the IRRF due is equal to zero or less, no IRRF is paid
+            if (irrf_due <= 0) {
+                irrf_due = 0;
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: Isento";
+            // If the is a value higher than zero to be paid, displays the quantity and updates the details screen
+            } else {
+                document.getElementById("irrf").innerHTML = "Imposto de Renda: - R$ " + irrf_due;
+            }
+
             // Calculates the liquid wage
             var liquid_wage = (
                 parseFloat(pattern_value) + 
@@ -2413,6 +3798,7 @@ function sumValues(pattern, ats_number, days_number, prev_type) {
                 parseFloat(hard_access_value) +
                 parseFloat(hard_occupation_value) +
                 parseFloat(ats_value) - 
+                parseFloat(irrf_due) -
                 parseFloat(social_sec_disc)).toFixed(2);
 
             // Updates all the fields not yet updated with the results
