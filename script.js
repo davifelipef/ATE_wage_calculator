@@ -18,6 +18,7 @@ function resetSelectedOption() {
     var select_access = document.getElementById("dificil_acesso");
     var select_occup = document.getElementById("dificil_lotacao");
     var select_prev = document.getElementById("desconto_prev");
+    var select_dep = document.getElementById("dependentes");
     // Index 2 corresponds to the default option, QPE03A
     select_ref.selectedIndex = 2;
     select_grau.selectedIndex = 0;
@@ -26,6 +27,7 @@ function resetSelectedOption() {
     select_access.selectedIndex = 0;
     select_occup.selectedIndex = 0;
     select_prev.selectedIndex = 0;
+    select_dep.selectedIndex = 0;
 }
 
 // Function called whenever a field is changed
