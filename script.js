@@ -314,8 +314,8 @@ function sumValues(pattern_value, ats_number, days_number, prev_type) {
             break;
     }
 
-    // Creates all the wage values that will be used for the calculations
-    const ir_v_1 = 1903.98;
+    // Creates all the wage values that will be used for the calculations of Income Tax
+    const ir_v_1 = 2112.01;
     const ir_v_2 = 2826.65;
     const ir_v_3 = 3751.05;
     const ir_v_4 = 4664.68;
@@ -478,24 +478,24 @@ function sumValues(pattern_value, ats_number, days_number, prev_type) {
         parseFloat(ats_value) - 
         parseFloat(social_sec_disc)).toFixed(2);
     
-    // If the IRRF wage is lower than 1903.98
+    // If the IRRF wage is lower than 2112.01
     if (irrf_wage < ir_v_1) {
         irrf_aliq = 0;
-    // IRRF wage is higher than 1903.98 and lower or equal to 2826.65
+    // IRRF wage is higher or equal to 2112.01 and lower or equal to 2826.65
     } else if (irrf_wage > ir_v_1 <= ir_v_2) {
         irrf_aliq = 0.075;
-        irrf_deduc = 142.8;
+        irrf_deduc = 158.4;
     // IRRF wage is higher than 2826.65 and lower or equal to 3751.05
     } else if (irrf_wage > ir_v_2 <= ir_v_3) {
         irrf_aliq = 0.15;
-        irrf_deduc = 354.8;
+        irrf_deduc = 370.4;
     // IRRF wage is higher than 3751.05 and lower or equal to 4664.68
     } else if (irrf_wage > ir_v_3 <= ir_v_4) {
         irrf_aliq = 0.225;
-        irrf_deduc = 636.13;
+        irrf_deduc = 651.73;
     } else {
         irrf_aliq = 0.275;
-        irrf_deduc = 869.36;
+        irrf_deduc = 884.96;
     }
     
     /* Calculates the IRRF due by multiplying the aliquote by the IRRF wage then 
